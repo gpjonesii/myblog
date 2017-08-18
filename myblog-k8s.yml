@@ -1,0 +1,33 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: myblog
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: myblog
+        name: myblog
+    spec:
+      containers:
+      - name: myblog
+        image: gpjonesii/myblog:latest
+        ports:
+        - containerPort: 80
+---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: myblog
+  name: myblog
+spec:
+  type: "LoadBalancer"
+  ports:
+  - name: "http"
+    port: 80
+    targetPort: 80
+  selector:
+    app: myblog
